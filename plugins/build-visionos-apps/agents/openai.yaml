@@ -1,0 +1,6 @@
+interface:
+  display_name: "Build visionOS Apps"
+  short_description: "Build, refine, and debug visionOS apps with spaces, RealityKit, and Xcode workflows"
+  icon_small: "./assets/build-visionos-apps-small.svg"
+  icon_large: "./assets/app-icon.png"
+  default_prompt: "Build or debug a visionOS app with SwiftUI scenes, RealityKit content, and the visionOS Simulator."

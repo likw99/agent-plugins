@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spatial Gestures & Interaction"
+  short_description: "Wire spatial tap/drag/rotate/magnify gestures and hover on entities"
+  default_prompt: "Use $spatial-gestures-interaction to make RealityKit entities interactive with spatial gestures."

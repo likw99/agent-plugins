@@ -1,0 +1,4 @@
+interface:
+  display_name: "visionOS Scenes & Spaces"
+  short_description: "Choose and wire windows, volumes, and immersive spaces"
+  default_prompt: "Use $visionos-scenes-and-spaces to structure scenes and wire window/immersive-space transitions."

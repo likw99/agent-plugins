@@ -1,0 +1,4 @@
+interface:
+  display_name: "RealityKit Entities"
+  short_description: "Load and compose RealityKit 3D content with RealityView and USDZ"
+  default_prompt: "Use $realitykit-entities to load, scale, and compose 3D models in a RealityView."

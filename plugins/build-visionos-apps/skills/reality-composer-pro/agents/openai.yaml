@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reality Composer Pro"
+  short_description: "Author 3D scenes and Shader Graph materials in the RealityKitContent package"
+  default_prompt: "Use $reality-composer-pro to organize content, author materials, and load authored scenes."

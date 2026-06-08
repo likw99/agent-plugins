@@ -1,0 +1,28 @@
+{
+  "name": "build-visionos-apps",
+  "version": "0.1.0",
+  "description": "Build visionOS apps with workflows for windows, volumes, and immersive spaces, RealityKit 3D content, Reality Composer Pro scenes, spatial gestures, and simulator/device build-run-debug.",
+  "author": {
+    "name": "Kaiwei Li",
+    "email": "likaiwei99@gmail.com",
+    "url": "https://github.com/likw99"
+  },
+  "homepage": "https://github.com/likw99/agent-plugins/tree/main/plugins/build-visionos-apps",
+  "repository": "https://github.com/likw99/agent-plugins",
+  "license": "MIT",
+  "keywords": [
+    "visionos",
+    "spatial",
+    "realitykit",
+    "reality-composer-pro",
+    "swiftui",
+    "immersive-space",
+    "volumetric",
+    "arkit",
+    "usdz",
+    "xcode",
+    "vision-pro"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

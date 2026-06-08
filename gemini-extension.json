@@ -1,0 +1,6 @@
+{
+  "name": "agent-plugins-marketplace",
+  "version": "0.1.0",
+  "description": "Cross-agent plugins and skills for shipping AI-native products fast.",
+  "contextFileName": "GEMINI.md"
+}

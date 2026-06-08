@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build / Run / Debug visionOS"
+  short_description: "Build, run, and debug visionOS apps on Simulator or device"
+  default_prompt: "Use $build-run-debug-visionos to set up a build_and_run script and launch the app on the visionOS Simulator."
