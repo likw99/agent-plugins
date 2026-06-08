@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spatial Audio & Sound"
+  short_description: "RealityKit spatial audio and simple UI sound effects"
+  default_prompt: "Use $spatial-audio-sound to play a chime on an event or add spatial audio to entities."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Speech-to-Text"
+  short_description: "Apple-native on-device speech input for visionOS"
+  default_prompt: "Use $speech-to-text to let users dictate input by voice with SFSpeechRecognizer or SpeechAnalyzer."

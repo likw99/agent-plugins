@@ -7,14 +7,14 @@
   },
   "metadata": {
     "description": "Cross-agent plugins and skills for shipping AI-native products fast",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "build-visionos-apps",
       "source": "./plugins/build-visionos-apps",
       "description": "Build, refine, and debug visionOS apps with SwiftUI scenes, RealityKit, immersive spaces, and Xcode workflows.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Kaiwei Li",
         "email": "likaiwei99@gmail.com",

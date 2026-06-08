@@ -11,10 +11,13 @@ It currently includes these skills:
 - `realitykit-entities`
 - `reality-composer-pro`
 - `spatial-gestures-interaction`
+- `visionos-animations`
+- `spatial-audio-sound`
+- `speech-to-text`
 
-(Phase 3 adds `swiftui-visionos-patterns`, `visionos-hig-design`, `arkit-spatial`,
-`spatial-audio-media`, `visionos-performance`, `visionos-testing-debug`, and
-`packaging-signing-visionos`.)
+(Later phases add `swiftui-visionos-patterns`, `visionos-hig-design`,
+`arkit-spatial`, `immersive-media`, `visionos-performance`,
+`visionos-testing-debug`, and `packaging-signing-visionos`.)
 
 ## What It Covers
 
@@ -27,6 +30,13 @@ It currently includes these skills:
   Swift package, including Shader Graph materials and `.rkassets`
 - wiring spatial gestures (tap, drag, rotate, magnify) targeted to entities,
   plus hover effects and the eye/hand input + privacy model
+- animating SwiftUI and RealityKit content, including engaging in-progress and
+  loading states for long async work (symbol effects, phase/keyframe animators,
+  entity spin/orbit/skeletal animation)
+- adding sound: RealityKit spatial audio on entities and simple non-spatial UI
+  sound effects (completion chimes, event-driven playback)
+- capturing Apple-native on-device speech-to-text (`SFSpeechRecognizer` and the
+  visionOS 26+ `SpeechAnalyzer`/`SpeechTranscriber`) with mic/speech permissions
 - building, running, and debugging apps on the visionOS Simulator and Apple
   Vision Pro with a project-local `build_and_run.sh` and XcodeBuildMCP
 
@@ -39,15 +49,12 @@ It currently includes these skills:
 
 ## Plugin Structure
 
-The plugin source of truth lives in this repo at:
+The plugin lives in the `agent-plugins` marketplace repo at:
 
-- `tools/codex-plugins/build-visionos-apps/`
+- `plugins/build-visionos-apps/`
 
-and is installed into the Codex cache via `install.sh` (symlink) at:
-
-- `~/.codex/plugins/cache/custom/build-visionos-apps/`
-
-with this shape:
+and can be symlinked into a local agent's plugin cache via `install.sh` for
+development. It has this shape:
 
 - `.codex-plugin/plugin.json`
   - required plugin manifest; defines metadata and points Codex at the contents
