@@ -1,0 +1,4 @@
+interface:
+  display_name: "visionOS Animations"
+  short_description: "Animate SwiftUI and RealityKit content; build engaging loading states"
+  default_prompt: "Use $visionos-animations to add loading/progress animation in SwiftUI and RealityKit."

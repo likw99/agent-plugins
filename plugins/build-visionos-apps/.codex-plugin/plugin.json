@@ -1,6 +1,6 @@
 {
   "name": "build-visionos-apps",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Build visionOS apps with workflows for windows, volumes, and immersive spaces, RealityKit 3D content, Reality Composer Pro scenes, spatial gestures, and simulator/device build-run-debug.",
   "author": {
     "name": "HiPtah",
