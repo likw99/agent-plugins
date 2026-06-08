@@ -1,12 +1,26 @@
 #!/usr/bin/env bash
-# Install the build-visionos-apps plugin into the Codex custom plugin cache by
-# symlinking this repo-tracked source directory. The repo is the source of
-# truth; the cache is regenerable. Re-run this if the cache is wiped.
+# Install (or update) the build-visionos-apps plugin.
+#
+# Usage:
+#   ./install.sh           — symlink this directory into the Codex plugin cache
+#   ./install.sh --update  — git pull the repo first, then re-symlink
+#
+# The repo is the source of truth; the cache entry is just a symlink.
+# Re-run any time the cache is wiped or after a pull.
 set -euo pipefail
 
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST_DIR="${HOME}/.codex/plugins/cache/custom"
 DEST="${DEST_DIR}/build-visionos-apps"
+
+# --update: pull latest from origin/main before (re-)linking
+if [[ "${1:-}" == "--update" ]]; then
+    echo "Pulling latest from origin/main..."
+    git -C "${REPO_ROOT}" fetch --quiet origin
+    git -C "${REPO_ROOT}" merge --ff-only origin/main
+    echo
+fi
 
 mkdir -p "${DEST_DIR}"
 ln -sfn "${SRC}" "${DEST}"
