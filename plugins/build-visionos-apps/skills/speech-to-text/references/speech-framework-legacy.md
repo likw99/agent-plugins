@@ -35,14 +35,22 @@ final class DictationModel {
             errorMessage = "Speech recognition unavailable"; return
         }
         do {
+            // Configure audio session BEFORE touching inputNode.
+            // Without this the input node has no valid hardware format
+            // (0 channels / 0 sample rate) and installTap throws NSException.
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playAndRecord, mode: .measurement,
+                                    options: [.duckOthers, .allowBluetoothHFP])
+            try session.setActive(true, options: .notifyOthersOnDeactivation)
+
             let req = SFSpeechAudioBufferRecognitionRequest()
             req.shouldReportPartialResults = true
             if recognizer.supportsOnDeviceRecognition { req.requiresOnDeviceRecognition = true }
             request = req
 
-            let input = engine.inputNode
-            let format = input.outputFormat(forBus: 0)
-            input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak req] buf, _ in
+            // Pass nil — lets AVFAudio pick the live hardware format.
+            // outputFormat(forBus:) returns garbage before the session is active.
+            engine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { [weak req] buf, _ in
                 req?.append(buf)
             }
             engine.prepare()
@@ -70,6 +78,8 @@ final class DictationModel {
         task?.cancel()
         request = nil; task = nil
         isListening = false
+        try? AVAudioSession.sharedInstance().setActive(false,
+                                                       options: .notifyOthersOnDeactivation)
     }
 }
 ```
@@ -107,10 +117,14 @@ HStack {
 
 ## Notes & pitfalls
 
+- **Call `AVAudioSession.setCategory` + `setActive(true)` before `start()`** — this
+  must happen before any `inputNode` access or `installTap` crashes with `NSException`.
+- Call `AVAudioSession.setActive(false)` in `stop()` so other audio apps resume.
 - Request **both** speech auth and mic permission before `start()`.
 - Always `removeTap(onBus:)` and `endAudio()` on stop — else the mic stays hot.
 - Server-based recognition has session time limits; on-device avoids them and is
   private — prefer it when `supportsOnDeviceRecognition` is true.
-- `inputNode.outputFormat(forBus:)` must be read after the engine is configured;
-  use it as the tap format.
+- **Do not** pass `inputNode.outputFormat(forBus:)` as the tap format — it returns
+  garbage (0 channels/rate) until `AVAudioSession` is active. Pass `nil` instead
+  and let AVFAudio resolve the hardware format itself.
 - Handle `recognizer.isAvailable` changing (e.g. no network for server mode).

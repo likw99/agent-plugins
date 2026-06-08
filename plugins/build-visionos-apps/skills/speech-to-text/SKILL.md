@@ -39,6 +39,10 @@ AVAudioApplication.requestRecordPermission { granted in /* mic */ }
 
 ## SFSpeechRecognizer recipe (HiPtah default)
 
+> **Critical:** configure `AVAudioSession` **before** touching `engine.inputNode`.
+> Without an active recording session the input node has no valid hardware format
+> (0 channels / 0 sample rate) and `installTap` throws `NSException` / crashes the app.
+
 ```swift
 import Speech
 import AVFoundation
@@ -49,14 +53,22 @@ var request: SFSpeechAudioBufferRecognitionRequest?
 var task: SFSpeechRecognitionTask?
 
 func start(onText: @escaping (String) -> Void) throws {
+    // 1. Activate audio session FIRST — must precede any inputNode access
+    let session = AVAudioSession.sharedInstance()
+    try session.setCategory(.playAndRecord, mode: .measurement,
+                            options: [.duckOthers, .allowBluetoothHFP])
+    try session.setActive(true, options: .notifyOthersOnDeactivation)
+
     let req = SFSpeechAudioBufferRecognitionRequest()
     req.shouldReportPartialResults = true
-    req.requiresOnDeviceRecognition = true            // keep it on-device
+    // Gate on-device flag — simulator may not have the model
+    if recognizer.supportsOnDeviceRecognition { req.requiresOnDeviceRecognition = true }
     request = req
 
-    let input = engine.inputNode
-    input.installTap(onBus: 0, bufferSize: 1024,
-                     format: input.outputFormat(forBus: 0)) { buffer, _ in
+    // 2. Pass nil format — lets AVFAudio use the live hardware format.
+    //    Reading outputFormat(forBus:) before the session is active returns
+    //    garbage (0 channels/rate) and also crashes installTap.
+    engine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { buffer, _ in
         req.append(buffer)
     }
     engine.prepare(); try engine.start()
@@ -71,6 +83,8 @@ func stop() {
     engine.stop(); engine.inputNode.removeTap(onBus: 0)
     request?.endAudio(); task?.cancel()
     request = nil; task = nil
+    try? AVAudioSession.sharedInstance().setActive(false,
+                                                   options: .notifyOthersOnDeactivation)
 }
 ```
 
@@ -99,8 +113,12 @@ before use. Full flow in `references/speech-framework-modern.md`.
 - Info.plist has `NSMicrophoneUsageDescription` + `NSSpeechRecognitionUsageDescription`.
 - Authorization requested and denial/restricted handled with clear UX.
 - Correct API for the deployment target (gate the 26+ path).
+- **`AVAudioSession` configured and activated before any `inputNode` access.**
+- `installTap` called with `format: nil` (not `outputFormat(forBus:)` before session is live).
+- `requiresOnDeviceRecognition` gated on `recognizer.supportsOnDeviceRecognition` (not hardcoded `true`).
 - Partial results stream into the field; mic button shows listening state.
 - Audio engine tap removed and task ended on stop / `onDisappear`.
+- `AVAudioSession.setActive(false)` called in `stop()`.
 - On-device recognition preferred for privacy; locale set explicitly.
 
 ## References
@@ -116,7 +134,11 @@ before use. Full flow in `references/speech-framework-modern.md`.
 - Never start capture before authorization + mic permission are granted.
 - Don't ship without the two Info.plist usage strings — the app will crash on access.
 - Don't use `SpeechAnalyzer` unguarded on a < 26 target — it won't compile/run.
+- **Don't touch `engine.inputNode` before `AVAudioSession` is active** — `installTap` throws `NSException` and crashes.
+- **Don't pass `outputFormat(forBus:)` as the tap format** — use `nil`; the format is invalid until the session is live.
+- Don't hardcode `requiresOnDeviceRecognition = true` — gate it on `recognizer.supportsOnDeviceRecognition` (simulator often lacks the model).
 - Don't leave the audio tap installed or the task running after stop (battery, mic indicator).
+- Don't forget to call `AVAudioSession.setActive(false)` in `stop()`.
 - Prefer on-device recognition; warn if falling back to server-based.
 
 ## Output Expectations
