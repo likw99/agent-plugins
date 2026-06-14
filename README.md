@@ -36,6 +36,19 @@ Included skills:
 - `reality-composer-pro`
 - `spatial-gestures-interaction`
 
+### hermes-tweet
+
+Use Hermes Agent for X/Twitter research, social listening, and approval-gated
+actions through the native Hermes Tweet plugin.
+
+Source plugin:
+
+- `Xquik-dev/hermes-tweet`
+
+Included skill:
+
+- `hermes-tweet`
+
 ## Install
 
 ### Claude Code
@@ -50,6 +63,7 @@ Install the first plugin:
 
 ```text
 /plugin install build-visionos-apps@agent-plugins-marketplace
+/plugin install hermes-tweet@agent-plugins-marketplace
 ```
 
 ### Codex CLI / Codex App
@@ -64,6 +78,7 @@ Install the first plugin:
 
 ```bash
 codex plugin add build-visionos-apps@agent-plugins-marketplace
+codex plugin add hermes-tweet@agent-plugins-marketplace
 ```
 
 Start a new thread after install so newly exposed skills and tools are loaded.
@@ -108,6 +123,7 @@ agent-plugins/
       commands/
       skills/
       assets/
+    hermes-tweet -> Xquik-dev/hermes-tweet
   docs/
     official-marketplaces.md
     hermes.md
