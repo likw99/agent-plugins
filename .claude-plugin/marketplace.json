@@ -21,6 +21,20 @@
         "url": "https://github.com/likw99"
       },
       "strict": true
+    },
+    {
+      "name": "hermes-tweet",
+      "source": {
+        "source": "github",
+        "repo": "Xquik-dev/hermes-tweet"
+      },
+      "description": "Native Hermes Agent X/Twitter plugin with read tools and approval-gated action tools.",
+      "version": "0.1.6",
+      "author": {
+        "name": "Xquik",
+        "url": "https://github.com/Xquik-dev"
+      },
+      "strict": false
     }
   ]
 }
